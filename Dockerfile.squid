@@ -1,0 +1,11 @@
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y squid iproute2 curl iputils-ping net-tools
+
+COPY config/squid/squid.conf /etc/squid/squid.conf
+
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+
+EXPOSE 3128
+
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

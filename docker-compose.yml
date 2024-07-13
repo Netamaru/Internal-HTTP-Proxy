@@ -1,0 +1,34 @@
+version: "3.7"
+
+services:
+  openvpn-client:
+    build:
+      context: .
+      dockerfile: Dockerfile.openvpn
+    container_name: openvpn-client
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun
+    networks:
+      vpn-net:
+        aliases:
+          - openvpn
+
+  squid-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile.squid
+    container_name: squid-proxy
+    depends_on:
+      - openvpn-client
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - vpn-net
+    ports:
+      - "3128:3128"
+
+networks:
+  vpn-net:
+    external: true

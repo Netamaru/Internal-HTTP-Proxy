@@ -1,0 +1,10 @@
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y openvpn curl iptables iputils-ping net-tools
+
+COPY config/openvpn/config.ovpn /etc/openvpn/config.ovpn
+COPY config/openvpn/auth.txt /etc/openvpn/auth.txt
+
+RUN echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
+
+CMD ["sh", "-c", "sysctl -p && iptables -t nat -A POSTROUTING -o tun0 -j MASQUERADE && openvpn --config /etc/openvpn/config.ovpn --auth-user-pass /etc/openvpn/auth.txt"]
