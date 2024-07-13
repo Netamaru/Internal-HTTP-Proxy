@@ -58,7 +58,7 @@ To set up the internal HTTP proxy, follow these steps:
 4. **Build and run the Docker containers:**
 
    ```bash
-   docker-compose up --build
+   docker-compose up -d --build
    ```
 
 ## Usage
